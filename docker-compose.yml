@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  emoji-archiver:
+    container_name: sleeper-bot
+    image: ghcr.io/jonathan-yeagy/sleeper-bot:latest
+    restart: always
+    environment:
+      - NODE_ENV=production
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - GUILD_ID=${GUILD_ID}
+      - CHANNEL_ID=${CHANNEL_ID}
