@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+const { getLeagueName } = require('./sleeperApi');
 
 // Get guild and channel from environment variables
 const guildId = process.env.GUILD_ID;
@@ -18,9 +19,12 @@ async function sendOnlineEmbed(bot) {
   const { guild, channel } = await getGuildAndChannel(bot);
 
   if (guild && channel && channel.isTextBased()) {
+    // Get league name from Sleeper API
+    const leagueName = await getLeagueName(process.env.SLEEPER_LEAGUE_ID);
+    
     const embed = new EmbedBuilder()
       .setTitle('Sleeper Bot is Online')
-      .setDescription(`We are monitoring [your league] for activity.`)
+      .setDescription(`We are monitoring ${leagueName} for activity.`)
       .setColor(0x00BFFF)
       .setTimestamp();
 

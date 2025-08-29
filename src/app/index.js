@@ -5,6 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const { Client, GatewayIntentBits, ActivityType } = require('discord.js');
 const { sendOnlineEmbed } = require('./utils/sendEmbed');
+const { getLeagueName } = require('./utils/sleeperApi');
 
 
 const bot = new Client({
@@ -18,12 +19,14 @@ const bot = new Client({
 bot.login(process.env.DISCORD_TOKEN);
 
 //on ready
-bot.on('ready', async () => {
+bot.on('clientReady', async () => {
   console.log(`Logged in as ${bot.user.tag}`);
 
   bot.user.setStatus('online');
-  bot.user.setActivity('your Fantasy League', { type: ActivityType.Watching });
-
+  
+  // Get league name from Sleeper API
+  const leagueName = await getLeagueName(process.env.SLEEPER_LEAGUE_ID);
+  bot.user.setActivity(leagueName, { type: ActivityType.Watching });
 
   sendOnlineEmbed(bot);
 });
